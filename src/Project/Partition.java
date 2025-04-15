@@ -1,0 +1,49 @@
+package Project;
+
+public class Partition {
+	// the representation of each memory partition
+	private int base;         // base address
+	private int length;       // partition size
+	private boolean bFree;    // status: free or allocated
+	private String process;   // assigned process if allocated
+
+	// constructor method
+	public Partition(int base, int length) {
+		this.base = base;
+		this.length = length;
+		this.bFree = true;     // free by default when creating
+		this.process = null;   // unallocated to any process
+	}
+
+      //get and set methods
+      public int getBase(){   
+    	  return base;
+    	  }
+	public void setBase(int base){   
+		this.base = base;
+		}
+	public int getLength(){   
+		return length;
+		}
+	public void setLength(int length){	 
+		this.length = length;
+		}
+	public boolean isFree(){	 
+		return bFree;
+		}
+	public void setFree(boolean bFree){	 
+		this.bFree = bFree;
+		}
+	public String getProcess(){  
+		return process;
+		}
+	public void setProcess(String p){	 
+		this.process = p;
+		}
+
+	@Override
+	public String toString() {
+		return "Partition [base=" + base + ", length=" + length 
+				+ ", bFree=" + bFree + ", process=" + process + "]";
+	}
+} 

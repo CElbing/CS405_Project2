@@ -38,5 +38,25 @@ public class Driver {
         line = parseFile.nextLine().split(" ");
         temp = line[2];
         int MAX_PROC_TIME = Integer.parseInt(temp);
+
+        //ArrayList to hold all procs generated
+        ArrayList<PCB> procs = new ArrayList<>();
+
+        //Randmonly create processes based on values from proc file
+        for(int i = 1; i < NUM_PROC + 1; i++){
+            int size = (int)(Math.random()*PROC_SIZE_MAX);
+            int lifeTime = (int)(Math.random()*MAX_PROC_TIME) / 1000;
+            
+            //Ceate a new proc with a random size and lifetime
+            PCB curProc = new PCB(i, size, lifeTime);
+
+            //Add curProc to procs
+            procs.add(curProc);
+        }
+
+        for(PCB proc : procs){
+            System.out.println(proc);
+        }
+
 	}
 }

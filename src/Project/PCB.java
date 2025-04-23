@@ -6,6 +6,9 @@ public class PCB {
     private int size;
     private int lifeTime;
 
+    //used to help identify holes with similar sized
+    private int index;
+
     //Process constructor creates process based on id, size and life time
     public PCB(String id, int size, int lifeTime){
         this.id = id;
@@ -14,7 +17,8 @@ public class PCB {
     }
 
     //Overloading to create a "process" which will represent the free holes
-    public PCB(int size){
+    public PCB(int index, int size){
+        this.index = index;
         this.id = "Free";
         this.size = size;
     }
@@ -50,14 +54,24 @@ public class PCB {
         this.lifeTime = lifeTime;
     }
 
+    //Getter for index
+    public int getIndex(){
+        return this.index;
+    }
+
+    //Setter for index
+    public void setIndex(int index){
+        this.index = index;
+    }
+
     @Override
     public String toString(){
         String str;
         if(id.equals("Free")){
-            str = "| Free " + "(" + size + "KB) |"; 
+            str = "| Free " + "(" + size + "KB)"; 
         }
         else{
-            str = "| " + id + " [" + lifeTime + "s] (" + size + "KB) |"; 
+            str = "| " + id + " [" + lifeTime + "s] (" + size + "KB) "; 
         }
         return str;
     }

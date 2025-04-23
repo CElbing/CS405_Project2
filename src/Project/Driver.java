@@ -45,14 +45,14 @@ public class Driver {
         // Linked list to hold waiting processes
         LinkedList<PCB> waitQueue = new LinkedList<>();
 
-        // Randmonly create processes based on values from proc file
-
+        //Represents current amount of space being taken up by processes
         int totalProcSize = 0;
+        int curIndex = 2;
 
+        // Randmonly create processes based on values from proc file
         for (int i = 1; i < NUM_PROC + 1; i++) {
             int size = (int) (Math.random() * PROC_SIZE_MAX);
             int lifeTime = (int) (Math.random() * MAX_PROC_TIME) / 1000;
-            totalProcSize += size;
             // Convert value of i to string to be used for id
             String id = "P" + String.valueOf(i);
 
@@ -60,20 +60,30 @@ public class Driver {
             PCB curProc = new PCB(id, size, lifeTime);
 
             // Add curProc to procs
-            if (totalProcSize < MEMORY_MAX) {
+            if (size < MEMORY_MAX - totalProcSize) {
                 procs.add(curProc);
+                totalProcSize += size;
             } else { // Add to waiting queue because memory is full
                 waitQueue.add(curProc);
             }
         }
 
-        // Creating hole from remaing memory
-        if (totalProcSize < MAX_PROC_TIME) {
-            PCB remainingMem = new PCB(MEMORY_MAX - totalProcSize);
-            procs.add(remainingMem);
+        // Creating hole from remaining memory
+        PCB remainingMem = new PCB(1, MEMORY_MAX - totalProcSize);
+        procs.add(remainingMem);
+
+        //Print the processes that fit into the memory
+        System.out.println("Current Procs: ");
+        for (PCB proc : procs) {
+            System.out.println(proc);
         }
 
-        for (PCB proc : procs) {
+        //Print line to seperate current proccesses from waiting processes
+        System.out.println(" ");
+
+        // Print the processes that are waiting for memory
+        System.out.println("Wait Queue: ");
+        for (PCB proc : waitQueue) {
             System.out.println(proc);
         }
 

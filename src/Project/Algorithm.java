@@ -4,9 +4,9 @@ import java.util.*;
 
 //Algorithm class to create Hash Map
 public abstract class Algorithm {
-    protected HashMap<Integer,Integer> sizeMap = new HashMap<>(); //hash map of all procs and their sizes.
+    protected HashMap<String,Integer> sizeMap = new HashMap<>(); //hash map of all procs and their sizes.
     protected ArrayList<PCB> procs; //list of all processes
-    protected ArrayList<Integer> holeList; //list of holes 
+    protected ArrayList<PCB> holeList; //list of holes 
     protected PCB curProcess; //current process
     protected int MAX_MEMORY; //memory max gather from driver
     protected double avgHoleSize; //avg hole size in current hole list
@@ -14,7 +14,7 @@ public abstract class Algorithm {
     protected double freeMemory; //keeps track of available memory to assign processes
 
     //Algorithm constructor creates algorithm based on proccesses, holelist, max memory, average hole size, total hole size and free memory
-    public Algorithm(ArrayList<PCB> procs, ArrayList<Integer> holeList, int MAX_MEMORY, double avgHoleSize, int totalHoleSize, double freeMemory){
+    public Algorithm(ArrayList<PCB> procs, ArrayList<PCB> holeList, int MAX_MEMORY, double avgHoleSize, int totalHoleSize, double freeMemory){
         this.procs = procs;
         this.holeList = holeList;
         this.MAX_MEMORY = MAX_MEMORY;

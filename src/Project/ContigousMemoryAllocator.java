@@ -20,15 +20,6 @@ public class ContigousMemoryAllocator {
 		this.partList.add(new Partition(0, size)); 
 	}
 
-	// prints the list of available commands
-	/*public void print_help_message() {
-		System.out.println("RQ <process> <size> to request memory of size for the process");
-		System.out.println("RL <process> to release the memory of the process");
-		System.out.println("STAT to show the memory allocation status");
-		System.out.println("EXIT to exit");
-		System.out.println("HELP to show the available commands");
-	}*/
-
 	// Get the total allocated memory size
 	private int allocated_memory() {
 		int allocated = 0;

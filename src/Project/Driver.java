@@ -72,20 +72,28 @@ public class Driver {
         PCB remainingMem = new PCB(1, MEMORY_MAX - totalProcSize);
         procs.add(remainingMem);
 
-        //Print the processes that fit into the memory
-        System.out.println("Current Procs: ");
-        for (PCB proc : procs) {
-            System.out.println(proc);
+        System.out.println("Which algorithm would you like to use?(FF, BF, WF)");
+        String choice = sc.nextLine();
+
+
+
+        Algorithm scheduler;
+        switch (choice) {
+            case "FF":
+                scheduler = new FirstFit(procs, waitQueue);
+                break;
+            case "BF":
+                scheduler = new BestFit(procs, waitQueue);
+                break;
+            case "WF":
+                scheduler = new WorstFit(procs, waitQueue);
+                break;
+            default:
+                scheduler = new FirstFit(procs, waitQueue);
+                break;
         }
 
-        //Print line to seperate current proccesses from waiting processes
-        System.out.println(" ");
-
-        // Print the processes that are waiting for memory
-        System.out.println("Wait Queue: ");
-        for (PCB proc : waitQueue) {
-            System.out.println(proc);
-        }
-
+        scheduler.schedule(); 
     }
+    
 }

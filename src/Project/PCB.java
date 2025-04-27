@@ -50,7 +50,7 @@ public class PCB {
     }
     
     //Sets the life time
-    public void setLifeTme(int lifeTime){
+    public void setLifeTime(int lifeTime){
         this.lifeTime = lifeTime;
     }
 

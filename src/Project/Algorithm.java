@@ -6,7 +6,8 @@ import java.util.*;
 public abstract class Algorithm {
     protected HashMap<String, Integer> allocMap = new HashMap<>(); // hash map of all procs and their sizes.
     protected ArrayList<PCB> procs; // list of all processes
-    protected ArrayList<PCB> holeList; // list of holes
+    protected ArrayList<PCB> holeList = new ArrayList<>(); // list of holes
+    protected ArrayList<PCB> currentState = new ArrayList<>();
     protected LinkedList<PCB> waitQueue; // queue of waiting processes
     protected PCB availProc; // current process
     protected int MAX_MEMORY; // memory max gather from driver
@@ -23,54 +24,60 @@ public abstract class Algorithm {
 
     // The mind
     public void schedule() {
-        ///Make sure procs isn't empty
-        while (!procs.isEmpty() || !waitQueue.isEmpty()) {
-            //adds all holes to hole lisy
-            for (PCB proc : procs) {
-                if (proc.getId().equals("Free")) {
-                    holeList.add(proc);
-                }
-                //Add procs to hash map if they are not already in it
-                if(!allocMap.containsKey(proc.getId())) {
-                    allocMap.put(proc.getId(), proc.getSize());
-                }
+        //Initialize lists
+        for(PCB proc : procs) {
+            //adds all holes to hole list
+            if (proc.getId().equals("Free")) {
+                holeList.add(proc);
             }
-
-            //availProc represents a process is available that can fit inside a hole
-            availProc = pickNextProcess();
-
-            //When there is an available process, allocate it to the appropriate hole
-            if(availProc != null){
-                for(PCB proc : waitQueue){
-                    for(PCB hole: holeList){
-                        if(hole.getSize() >= proc.getSize()){
-                            //Available hole is the same size as the proc size
-                            if(hole.getSize() == proc.getSize()){
-                                allocMap.put(proc.getId(), proc.getSize());
-                                holeList.remove(hole);
-                            }
-                            //Available hole is not the same size as the proc size
-                            else{
-                                int size = hole.getSize() - proc.getSize();
-                                PCB remainingHole = new PCB(hole.getIndex(), size);
-                                allocMap.put(proc.getId(), proc.getSize());
-                                hole = remainingHole;
-                            }
-                        }
-                    }
-                }
+            //Add procs to hash map if they are not already in it
+            if(!allocMap.containsKey(proc.getId())) {
+                allocMap.put(proc.getId(), proc.getSize());
             }
+            //Add all procs to the currentState array
+            currentState.add(proc);
         }
 
+        //Make sure procs isn't empty
+        while (!procs.isEmpty() || !waitQueue.isEmpty()) {
+            int procIndex = 0;
+            //Determining whether a process should decrement lifetime or become hole
+            for (PCB proc : currentState){
+            //Reduce lifetime by one
+                if(proc.getLifeTime() > 0){
+                    proc.setLifeTime(proc.getLifeTime() - 1);
+                }
 
+                //Process has run through its lifetime, set the process as a new hole
+                else if(proc.getLifeTime() == 0){
+                    //Remove process from allocMap and replace as hole in procs
+                    PCB newHole = new PCB(procIndex, proc.getSize());
+                    //Hole created in the place of proc
+                    currentState.set(procIndex, newHole);
+
+                    //add new hole to hole list
+                    holeList.add(newHole);
+
+                    //Remove proc from the list of proccesses
+                    procs.remove(proc);
+                }
+                procIndex += 1;
+            }
+
+            //Update holes and allocMap when process can be executed
+            allocateAvailProc();
+
+            //Print procs
+            print();
+        }
     }
 
-    public abstract PCB pickNextProcess();
-
+    public abstract void allocateAvailProc();
+    
     public void print() {
         //Print the processes that fit into the memory
-        System.out.println("Current Procs: ");
-        for (PCB proc : procs) {
+        System.out.println("Current State: ");
+        for (PCB proc : currentState) {
            System.out.println(proc);
         }
    

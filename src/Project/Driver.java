@@ -69,7 +69,7 @@ public class Driver {
         }
 
         // Creating hole from remaining memory
-        PCB remainingMem = new PCB(1, MEMORY_MAX - totalProcSize);
+        PCB remainingMem = new PCB(MEMORY_MAX - totalProcSize);
         procs.add(remainingMem);
 
         System.out.println("Which algorithm would you like to use?(FF, BF, WF)");

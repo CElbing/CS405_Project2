@@ -10,17 +10,17 @@ public class FirstFit extends Algorithm{
 
     @Override
     public void allocateAvailProc(){
+        int holeIndexCounter = 0;
         //Check for the first available parition big enough for proccess
         for(PCB proc : waitQueue){
             for(PCB hole: holeList){
                 if(hole.getSize() >= proc.getSize()){
                     //Available hole is the same size as the proc size
                     if(hole.getSize() == proc.getSize()){
-                        allocMap.put(proc.getId(), proc.getSize());
-                        procs.add(proc);
-                        
+                        //Set the hole to a new process
+                        currentState.set(holeIndexCounter,proc);
+                        //Remove proc from holeList
                         holeList.remove(hole);
-                        waitQueue.remove(proc);
                     }
                     //Available hole is not the same size as the proc size
                     else{
@@ -28,12 +28,20 @@ public class FirstFit extends Algorithm{
                         int size = hole.getSize() - proc.getSize();
                         //Update size of the hole
                         hole.setSize(size);
-                        //Update allocMap to contain new proccess
-                        allocMap.put(proc.getId(), proc.getSize());
-                        waitQueue.remove(proc);
+                        //Add new proccess
+                        currentState.add(holeIndexCounter+1,proc);
                     }
+                    //Add proc to procs
+                    procs.add(proc);
+                    //Update allocMap to contain new proccess
+                    allocMap.put(proc.getId(), proc.getSize());
+                    //Remove proc from waitQueue
+                    waitQueue.remove(proc);
+
+                    holeIndexCounter += 1;
                 }
             }
+            holeIndexCounter = 0;
         }
     }
 }

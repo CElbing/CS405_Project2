@@ -23,7 +23,7 @@ public abstract class Algorithm {
     }
 
     // The mind
-    public void schedule() {
+    public void schedule(){
         //Initialize lists
         for(PCB proc : procs) {
             //adds all holes to hole list
@@ -38,9 +38,16 @@ public abstract class Algorithm {
             currentState.add(proc);
         }
 
+        //Print intial lists
+        print();
+
         //Make sure procs isn't empty
-        while (!procs.isEmpty() || !waitQueue.isEmpty()) {
+        while (!procs.isEmpty()) {
             int procIndex = 0;
+
+            //Update holes and allocMap when process can be executed
+            allocateAvailProc();
+
             //Determining whether a process should decrement lifetime or become hole
             for (PCB proc : currentState){
             //Reduce lifetime by one
@@ -51,21 +58,16 @@ public abstract class Algorithm {
                 //Process has run through its lifetime, set the process as a new hole
                 else if(proc.getLifeTime() == 0){
                     //Remove process from allocMap and replace as hole in procs
-                    PCB newHole = new PCB(procIndex, proc.getSize());
+                    PCB newHole = new PCB(proc.getSize());
                     //Hole created in the place of proc
                     currentState.set(procIndex, newHole);
-
                     //add new hole to hole list
                     holeList.add(newHole);
-
                     //Remove proc from the list of proccesses
                     procs.remove(proc);
                 }
                 procIndex += 1;
             }
-
-            //Update holes and allocMap when process can be executed
-            allocateAvailProc();
 
             //Print procs
             print();
@@ -85,7 +87,7 @@ public abstract class Algorithm {
         System.out.println(" ");
    
         // Print the processes that are waiting for memory
-        System.out.println("Wait Queue: ");
+        System.out.println("Waiting Procs: ");
         for (PCB proc : waitQueue) {
             System.out.println(proc);
         }

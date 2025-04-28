@@ -5,6 +5,7 @@ import java.util.*;
 //Algorithm class to create Hash Map
 public abstract class Algorithm {
     protected HashMap<String, Integer> allocMap = new HashMap<>(); // hash map of all procs and their sizes.
+    protected HashMap<PCB, Integer> holeMap = new HashMap<>();
     protected ArrayList<PCB> procs; // list of all processes
     protected ArrayList<PCB> holeList = new ArrayList<>(); // list of holes
     protected ArrayList<PCB> currentState = new ArrayList<>();
@@ -29,6 +30,7 @@ public abstract class Algorithm {
             //adds all holes to hole list
             if (proc.getId().equals("Free")) {
                 holeList.add(proc);
+                holeMap.put(proc, proc.getSize());
             }
             //Add procs to hash map if they are not already in it
             if(!allocMap.containsKey(proc.getId())) {
@@ -63,6 +65,7 @@ public abstract class Algorithm {
                     currentState.set(procIndex, newHole);
                     //add new hole to hole list
                     holeList.add(newHole);
+                    holeMap.put(proc, proc.getSize());
                     //Remove proc from the list of proccesses
                     procs.remove(proc);
                 }
@@ -93,5 +96,11 @@ public abstract class Algorithm {
         }
 
         System.out.println();
+
+        System.out.println("Holes: " + holeList.size());
+        for (PCB proc : holeList) {
+            System.out.println(proc);
+        }
+
     }
 }

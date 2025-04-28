@@ -21,6 +21,7 @@ public class FirstFit extends Algorithm{
                         currentState.set(holeIndexCounter,proc);
                         //Remove proc from holeList
                         holeList.remove(hole);
+                        holeMap.remove(hole);
                     }
                     //Available hole is not the same size as the proc size
                     else{
@@ -28,6 +29,8 @@ public class FirstFit extends Algorithm{
                         int size = hole.getSize() - proc.getSize();
                         //Update size of the hole
                         hole.setSize(size);
+                        holeMap.remove(hole);
+                        holeMap.put(hole, size);
                         //Add new proccess
                         currentState.add(holeIndexCounter+1,proc);
                     }

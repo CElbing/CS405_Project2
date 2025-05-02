@@ -13,18 +13,19 @@ public class BestFit extends Algorithm{
         int holeIndexCounter = 0;
         int minSizePart = MAX_MEMORY;
         int bestHoleIndex = -1;
-        PCB bestHole = new PCB(-1);
+        PCB bestHole = new PCB(-1,-1);
         // Checks for hole with the greatest difference in size compared to avilable
         // proc in wait queue
         for (PCB proc : waitQueue) {
             for (PCB hole : holeList) {
-                if (!holeMap.isEmpty() && holeMap.get(hole) - proc.getSize() < minSizePart && holeMap.get(hole) - proc.getSize() >= 0 ) {
-                    minSizePart = holeMap.get(hole);
+                if (!holeList.isEmpty() && (((hole.getSize() - proc.getSize()) < minSizePart) && ((hole.getSize() - proc.getSize()) >= 0 ))) {
+                    minSizePart = hole.getSize() - proc.getSize();
                     bestHole = hole;
                     bestHoleIndex = holeIndexCounter;
                 }
                 holeIndexCounter += 1;
             }
+
             // if we have an available hole
             if (bestHole.getSize() != -1) {
                 if (bestHole.getSize() == proc.getSize()) {
@@ -36,16 +37,13 @@ public class BestFit extends Algorithm{
                 }
                 // Available hole is not the same size as the proc size
                 else {
-                    // New size after process takes up some memory
-                    int size = bestHole.getSize() - proc.getSize();
                     // Update size of the hole
-                    bestHole.setSize(size);
+                    bestHole.setSize(minSizePart);
                     holeMap.remove(bestHole);
-                    holeMap.put(bestHole, size);
+                    holeMap.put(bestHole, minSizePart);
                     // Add new proccess
                     currentState.add(bestHoleIndex + 1, proc);
                 }
-
                  // Add proc to procs
                  procs.add(proc);
                  // Update allocMap to contain new proccess
@@ -53,10 +51,9 @@ public class BestFit extends Algorithm{
                  // Remove proc from waitQueue
                  waitQueue.remove(proc);
             }
-            bestHole = new PCB(-1);
-            proc = new PCB(null, -1, -1);
+            bestHole = new PCB(MAX_MEMORY);
             holeIndexCounter = 0;
-            minSizePart = -1;
+            minSizePart = MAX_MEMORY;
             bestHoleIndex = -1;
         }
     }

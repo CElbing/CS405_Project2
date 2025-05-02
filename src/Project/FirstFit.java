@@ -32,7 +32,7 @@ public class FirstFit extends Algorithm{
                         holeMap.remove(hole);
                         holeMap.put(hole, size);
                         //Add new proccess
-                        currentState.add(holeIndexCounter+1,proc);
+                        currentState.add(proc);
                     }
                     //Add proc to procs
                     procs.add(proc);
@@ -40,7 +40,7 @@ public class FirstFit extends Algorithm{
                     allocMap.put(proc.getId(), proc.getSize());
                     //Remove proc from waitQueue
                     waitQueue.remove(proc);
-
+                    
                     holeIndexCounter += 1;
                 }
             }

@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.*;
 
 public class Driver {
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws Exception {
         // Scanner for user inputs
         Scanner sc = new Scanner(System.in);
 
@@ -47,8 +47,7 @@ public class Driver {
 
         //Represents current amount of space being taken up by processes
         int totalProcSize = 0;
-        int curIndex = 2;
-
+        int curIndex = 0;
         // Randmonly create processes based on values from proc file
         for (int i = 1; i < NUM_PROC + 1; i++) {
             int size = (int) (Math.random() * PROC_SIZE_MAX);
@@ -57,7 +56,7 @@ public class Driver {
             String id = "P" + String.valueOf(i);
 
             // Ceate a new proc with a random size and lifetime
-            PCB curProc = new PCB(id, size, lifeTime);
+            PCB curProc = new PCB(i, id, size, lifeTime);
 
             // Add curProc to procs
             if (size < MEMORY_MAX - totalProcSize) {
@@ -66,10 +65,11 @@ public class Driver {
             } else { // Add to waiting queue because memory is full
                 waitQueue.add(curProc);
             }
+            curIndex = i;
         }
 
         // Creating hole from remaining memory
-        PCB remainingMem = new PCB(MEMORY_MAX - totalProcSize);
+        PCB remainingMem = new PCB(curIndex+1, MEMORY_MAX - totalProcSize);
         procs.add(remainingMem);
 
         System.out.println("Which algorithm would you like to use?(FF, BF, WF)");
@@ -93,6 +93,7 @@ public class Driver {
                 break;
         }
 
+        scheduler.setMaxMemory(MEMORY_MAX);
         scheduler.schedule(); 
     }
     

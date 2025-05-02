@@ -18,8 +18,8 @@ public class WorstFit extends Algorithm {
         // proc in wait queue
         for (PCB proc : waitQueue) {
             for (PCB hole : holeList) {
-                if (!holeMap.isEmpty() && holeMap.get(hole) - proc.getSize() > maxSizePart) {
-                    maxSizePart = holeMap.get(hole);
+                if (!holeList.isEmpty() && hole.getSize() - proc.getSize() > maxSizePart) {
+                    maxSizePart = hole.getSize() - proc.getSize();
                     worstHole = hole;
                     worstHoleIndex = holeIndexCounter;
                 }
@@ -36,12 +36,10 @@ public class WorstFit extends Algorithm {
                 }
                 // Available hole is not the same size as the proc size
                 else {
-                    // New size after process takes up some memory
-                    int size = worstHole.getSize() - proc.getSize();
                     // Update size of the hole
-                    worstHole.setSize(size);
+                    worstHole.setSize(maxSizePart);
                     holeMap.remove(worstHole);
-                    holeMap.put(worstHole, size);
+                    holeMap.put(worstHole, maxSizePart);
                     // Add new proccess
                     currentState.add(worstHoleIndex + 1, proc);
                 }
@@ -54,7 +52,6 @@ public class WorstFit extends Algorithm {
                  waitQueue.remove(proc);
             }
             worstHole = new PCB(-1);
-            proc = new PCB(null, -1, -1);
             holeIndexCounter = 0;
             maxSizePart = -1;
             worstHoleIndex = -1;

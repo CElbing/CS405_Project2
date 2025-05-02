@@ -20,8 +20,8 @@ public class FirstFit extends Algorithm{
                         //Set the hole to a new process
                         currentState.set(holeIndexCounter,proc);
                         //Remove proc from holeList
-                        holeList.remove(hole);
                         holeMap.remove(hole);
+                        holeList.remove(hole);
                     }
                     //Available hole is not the same size as the proc size
                     else{

@@ -31,8 +31,8 @@ public class WorstFit extends Algorithm {
                     // Set the hole to a new process
                     currentState.set(worstHoleIndex, proc);
                     // Remove proc from holeList
-                    holeList.remove(worstHole);
                     holeMap.remove(worstHole);
+                    holeList.remove(worstHole);
                 }
                 // Available hole is not the same size as the proc size
                 else {

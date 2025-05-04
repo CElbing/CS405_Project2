@@ -5,21 +5,18 @@ public class PCB {
     private String id;
     private int size;
     private int lifeTime;
-    private int index;
 
     //Process constructor creates process based on id, size and life time
-    public PCB(int index, String id, int size, int lifeTime){
+    public PCB(String id, int size, int lifeTime){
         this.id = id;
         this.size = size;
         this.lifeTime = lifeTime;
-        this.index = index;
     }
 
     //Overloading to create a "process" which will represent the free holes
-    public PCB(int index, int size){
+    public PCB(int size){
         this.id = "Free";
         this.size = size;
-        this.index = index;
     }
     
     //Gets the id
@@ -51,16 +48,6 @@ public class PCB {
     //Sets the life time
     public void setLifeTime(int lifeTime){
         this.lifeTime = lifeTime;
-    }
-
-    //Get the index of a hole
-    public int getIndex(){
-        return this.index;
-    }
-
-    //Set the index of a hole
-    public void setIndex(int i){
-        this.index = i;
     }
 
     @Override
